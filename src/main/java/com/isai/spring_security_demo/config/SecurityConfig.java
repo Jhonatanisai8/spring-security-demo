@@ -28,22 +28,33 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    //     return httpSecurity
+    //             .csrf(crsf -> crsf.disable())
+    //             .httpBasic(Customizer.withDefaults())
+    //             .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // no guardar la sesion en menoria
+    //             .authorizeHttpRequests(http  -> {
+    //                 //configurar los enpoints publicos
+    //                 http.requestMatchers(HttpMethod.GET,"/auth/hello");
+    //                 //configurar los enpoints privados
+    //                 http.requestMatchers(HttpMethod.GET,"/auth/helloSecured")
+    //                 .hasAuthority("CREATED");
+    //                 //configurar los enpoints no especificados
+    //                 // http.anyRequest().denyAll(); //rechaza todo 
+    //                 http.anyRequest().authenticated(); //permite mientras estas autenticado
+    //             })
+    //             .build();
+    // }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(crsf -> crsf.disable())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // no guardar la sesion en menoria
-                .authorizeHttpRequests(http  -> {
-                    //metodo publico
-                    http.requestMatchers(HttpMethod.GET,"/auth/hello");
-                    http.requestMatchers(HttpMethod.GET,"/auth/helloSecured")
-                    .hasAuthority("CREATED");
-                    http.anyRequest().denyAll();
-                })
                 .build();
     }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {

@@ -21,8 +21,9 @@ public class TestAuthController {
     public String helloSecured() {
         return "Hello Word Secured.";
     }
-
+    
     @GetMapping("/helloSecured02")
+    @PreAuthorize("hasAuthority('CREATED')")
     public String helloSecured02() {
         return "Hello Word Secured.";
     }

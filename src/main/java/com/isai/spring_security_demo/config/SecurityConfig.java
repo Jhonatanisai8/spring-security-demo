@@ -1,5 +1,7 @@
 package com.isai.spring_security_demo.config;
 
+import java.util.List;
+
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,12 +46,19 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User
-                .withUsername("jhona")
-                .password("1234")
-                .roles("ADMIN")
-                .authorities("READ", "CREATED")
-                .build();
+        List<UserDetails> userDetails = List.of(
+                User
+                        .withUsername("jhona")
+                        .password("1234")
+                        .roles("ADMIN")
+                        .authorities("READ", "CREATED")
+                        .build(),
+                User
+                        .withUsername("eli")
+                        .password("1234")
+                        .roles("USER")
+                        .authorities("READ")
+                        .build());
         return new InMemoryUserDetailsManager(userDetails);
     }
 

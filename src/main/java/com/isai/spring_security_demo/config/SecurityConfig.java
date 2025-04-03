@@ -5,13 +5,16 @@ import java.util.List;
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,7 +30,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.build();
+        return httpSecurity
+                .csrf(crsf -> crsf.disable())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // no guardar la sesion en menoria
+                .authorizeHttpRequests(http  -> {
+                    //metodo publico
+                    http.requestMatchers(HttpMethod.GET,"/auth/hello");
+                    http.requestMatchers(HttpMethod.GET,"/auth/helloSecured")
+                    .hasAuthority("CREATED");
+                    http.anyRequest().denyAll();
+                })
+                .build();
     }
 
     @Bean
@@ -39,8 +53,8 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setPasswordEncoder(null);
-        authenticationProvider.setUserDetailsPasswordService(null);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setUserDetailsService(userDetailsService());
         return authenticationProvider;
     }
 

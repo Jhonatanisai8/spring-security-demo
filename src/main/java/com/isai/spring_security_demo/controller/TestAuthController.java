@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class TestAuthController {
 
     @GetMapping("/hello")
+    @PreAuthorize("permitAll()")
     public String hello() {
         return "Hello Word.";
     }
 
     @GetMapping("/helloSecured")
+    @PreAuthorize("hasAuthority('READ')")
     public String helloSecured() {
         return "Hello Word Secured.";
     }

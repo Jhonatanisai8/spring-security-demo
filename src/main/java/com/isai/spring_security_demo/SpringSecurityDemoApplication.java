@@ -6,7 +6,6 @@ import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.context.annotation.Bean;
 
 import com.isai.spring_security_demo.persistens.entitys.PermissionEntity;
@@ -102,7 +101,7 @@ public class SpringSecurityDemoApplication {
 					.build();
 
 			// guardamos en la base de datos
-			repository.saveAll(List.of(user01, user02, user03, user04));
+			// repository.saveAll(List.of(user01, user02, user03, user04));
 		};
 	}
 }

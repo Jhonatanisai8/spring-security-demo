@@ -23,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.isai.spring_security_demo.services.UserDetailsServiceImp;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -62,30 +64,30 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider(UserDetailsServiceImp userDetailsServiceImp) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setUserDetailsService(userDetailsServiceImp);
         return authenticationProvider;
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        List<UserDetails> userDetails = List.of(
-                User
-                        .withUsername("jhona")
-                        .password("1234")
-                        .roles("ADMIN")
-                        .authorities("READ", "CREATED")
-                        .build(),
-                User
-                        .withUsername("eli")
-                        .password("1234")
-                        .roles("USER")
-                        .authorities("READ")
-                        .build());
-        return new InMemoryUserDetailsManager(userDetails);
-    }
+    // @Bean
+    // public UserDetailsService userDetailsService() {
+    //     List<UserDetails> userDetails = List.of(
+    //             User
+    //                     .withUsername("jhona")
+    //                     .password("1234")
+    //                     .roles("ADMIN")
+    //                     .authorities("READ", "CREATED")
+    //                     .build(),
+    //             User
+    //                     .withUsername("eli")
+    //                     .password("1234")
+    //                     .roles("USER")
+    //                     .authorities("READ")
+    //                     .build());
+    //     return new InMemoryUserDetailsManager(userDetails);
+    // }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

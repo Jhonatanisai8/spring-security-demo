@@ -3,6 +3,7 @@ package com.isai.spring_security_demo.config;
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -23,40 +24,49 @@ import com.isai.spring_security_demo.services.UserDetailsServiceImp;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)
-    // throws Exception {
-    // return httpSecurity
-    // .csrf(crsf -> crsf.disable())
-    // .httpBasic(Customizer.withDefaults())
-    // .sessionManagement(sesion ->
-    // sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // no guardar
-    // la sesion en menoria
-    // .authorizeHttpRequests(http -> {
-    // //configurar los enpoints publicos
-    // http.requestMatchers(HttpMethod.GET,"/auth/hello");
-    // //configurar los enpoints privados
-    // http.requestMatchers(HttpMethod.GET,"/auth/helloSecured")
-    // .hasAuthority("CREATED");
-    // //configurar los enpoints no especificados
-    // // http.anyRequest().denyAll(); //rechaza todo
-    // http.anyRequest().authenticated(); //permite mientras estas autenticado
-    // })
-    // .build();
-    // }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)
+            throws Exception {
+
+        // (SessionCreationPolicy.STATELESS se guarda la sesion en memoria
         return httpSecurity
                 .csrf(crsf -> crsf.disable())
                 .httpBasic(Customizer.withDefaults())
-                .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // no
-                                                                                                            // guardar
-                                                                                                            // la sesion
-                                                                                                            // en
-                                                                                                            // menoria
+                .sessionManagement(sesion -> sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(http -> {
+                    // configurar los enpoints publicos
+                    http.requestMatchers(HttpMethod.GET, "/auth/get").permitAll();
+                    // configurar los enpoints privados
+                    http.requestMatchers(HttpMethod.POST, "/auth/post")
+                            .hasAnyAuthority("CREATED", "READ");
+                    http.requestMatchers(HttpMethod.PATCH, "/auth/patch")
+                            .hasAnyAuthority("REFACTOR");
+                    // validando por el
+                    http.requestMatchers(HttpMethod.DELETE, "/auth/delete")
+                            .hasRole("ADMIN");
+                    // configurar los enpoints no especificados
+                    // http.anyRequest().denyAll(); //rechaza todo
+                    http.anyRequest().authenticated(); // permite mientras estas autenticado
+                })
                 .build();
     }
+
+    /*
+     * @Bean
+     * public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)
+     * throws Exception {
+     * return httpSecurity
+     * .csrf(crsf -> crsf.disable())
+     * .httpBasic(Customizer.withDefaults())
+     * .sessionManagement(sesion ->
+     * sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // no
+     * // guardar
+     * // la sesion
+     * // en
+     * // menoria
+     * .build();
+     * }
+     */
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)

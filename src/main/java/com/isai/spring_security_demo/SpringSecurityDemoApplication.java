@@ -65,7 +65,7 @@ public class SpringSecurityDemoApplication {
 			// creacion de usuarios
 			UserEntity user01 = UserEntity.builder()
 					.userName("jhona")
-					.userPassword("1234")
+					.userPassword("$2a$10$BWP.aTgDyoGW.zvwxDC/y.V3.dJke28LdVc2CJZGc0Jsk51un00ru")
 					.isEnabled(true)
 					.accountNoExpire(true)
 					.accountNoLoked(true)
@@ -74,7 +74,7 @@ public class SpringSecurityDemoApplication {
 					.build();
 			UserEntity user02 = UserEntity.builder()
 					.userName("eli")
-					.userPassword("1234")
+					.userPassword("$2a$10$BWP.aTgDyoGW.zvwxDC/y.V3.dJke28LdVc2CJZGc0Jsk51un00ru")
 					.isEnabled(true)
 					.accountNoExpire(true)
 					.accountNoLoked(true)
@@ -83,7 +83,7 @@ public class SpringSecurityDemoApplication {
 					.build();
 			UserEntity user03 = UserEntity.builder()
 					.userName("andres")
-					.userPassword("1234")
+					.userPassword("$2a$10$BWP.aTgDyoGW.zvwxDC/y.V3.dJke28LdVc2CJZGc0Jsk51un00ru")
 					.isEnabled(true)
 					.accountNoExpire(true)
 					.accountNoLoked(true)
@@ -92,7 +92,7 @@ public class SpringSecurityDemoApplication {
 					.build();
 			UserEntity user04 = UserEntity.builder()
 					.userName("yani")
-					.userPassword("1234")
+					.userPassword("$2a$10$BWP.aTgDyoGW.zvwxDC/y.V3.dJke28LdVc2CJZGc0Jsk51un00ru")
 					.isEnabled(true)
 					.accountNoExpire(true)
 					.accountNoLoked(true)
